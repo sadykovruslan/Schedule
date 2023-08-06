@@ -1,29 +1,27 @@
-import org.w3c.dom.events.Event;
-
 import java.util.*;
 
 public class Schedule {
-    TreeSet<Even> scheduleSet = new TreeSet<>();
+    TreeSet<Event> scheduleSet = new TreeSet<>();
     TreeMap<Integer, Integer> scheduleMap = new TreeMap<>();
 
     void addEvent (int start, int end, String name){
-        Even even = new Even();
-        even.start = start;
-        even.end = end;
-        even.title = name;
+        Event event = new Event();
+        event.start = start;
+        event.end = end;
+        event.title = name;
 
-        scheduleSet.add(even);
+        scheduleSet.add(event);
 
         scheduleMap.put(start, scheduleMap.getOrDefault(start,0) + 1);
         scheduleMap.put(end, scheduleMap.getOrDefault(end,0) - 1);
     }
 
-    List<Even> getNext3 (int time){
-        Even o = new Even();
+    List<Event> getNext3 (int time){
+        Event o = new Event();
         o.start = time;
 
-        NavigableSet<Even> tailSet = scheduleSet.tailSet(o, true);
-        List<Even> result = new ArrayList<>(3);
+        NavigableSet<Event> tailSet = scheduleSet.tailSet(o, true);
+        List<Event> result = new ArrayList<>(3);
         for (int i = 0; i < 3; i++){
             if (!tailSet.isEmpty()){
                 result.add(tailSet.pollFirst());
@@ -58,13 +56,13 @@ public class Schedule {
     }
 }
 
-class Even implements Comparable <Even>{
+class Event implements Comparable <Event>{
     int start;
     int end;
     String title;
 
     @Override
-    public int compareTo(Even o) {
+    public int compareTo(Event o) {
         if (start == o.start) {
             return Integer.compare(end, o.end);
         } else return Integer.compare(start, o.start);
